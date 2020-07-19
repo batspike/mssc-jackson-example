@@ -18,9 +18,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.samcancode.restdocs.domain.Beer;
-import com.samcancode.restdocs.web.model.BeerDto;
-import com.samcancode.restdocs.web.model.BeerStyleEnum;
+import com.samcancode.msscjackson.domain.Beer;
+import com.samcancode.msscjackson.web.model.BeerDto;
+import com.samcancode.msscjackson.web.model.BeerStyleEnum;
 
 @SpringBootTest
 @AutoConfigureMockMvc
