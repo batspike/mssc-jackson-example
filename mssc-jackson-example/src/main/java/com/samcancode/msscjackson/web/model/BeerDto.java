@@ -48,7 +48,7 @@ public class BeerDto {
 	
 	@Positive
 	@NotNull
-	private Long upc;
+	private String upc;
 	
 	@Positive
 	@NotNull

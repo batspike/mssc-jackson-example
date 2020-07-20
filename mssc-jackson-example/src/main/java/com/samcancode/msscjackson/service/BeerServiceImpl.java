@@ -40,7 +40,6 @@ public class BeerServiceImpl implements BeerService {
 	@Override
 	public BeerDto updateBeerById(UUID beerId, BeerDto beerDto) {
 		Beer beer = beerRepo.findById(beerId).orElse(null);
-		System.out.println("*********"+beer);
 		if (beer == null) {
 			return null;
 		}

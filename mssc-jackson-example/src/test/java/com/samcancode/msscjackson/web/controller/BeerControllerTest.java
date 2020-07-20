@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.samcancode.msscjackson.bootstrap.BeerLoader;
 import com.samcancode.msscjackson.web.model.BeerDto;
 import com.samcancode.msscjackson.web.model.BeerStyleEnum;
 
@@ -52,7 +53,7 @@ class BeerControllerTest {
 	void testSaveNewBeer() throws Exception {
 
 		BeerDto beerDto = BeerDto.builder()
-				.upc(321200001L)
+				.upc(BeerLoader.BEER_1_UPC)
 				.price(new BigDecimal("12.29"))
 				.quantityOnHand(200)
 				.beerName("Tiger Beer")
@@ -73,7 +74,7 @@ class BeerControllerTest {
 		beerDto.setVersion(null);
 		beerDto.setCreatedDate(null);
 		beerDto.setLastModifiedDate(null);
-		beerDto.setUpc(321200002L);
+		beerDto.setUpc("32120000212");
 		beerDto.setPrice(new BigDecimal("13.99"));
 		beerDto.setQuantityOnHand(300);
 		beerDto.setBeerName("Best Beer");

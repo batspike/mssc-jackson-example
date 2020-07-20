@@ -6,6 +6,7 @@ import java.time.OffsetDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.samcancode.msscjackson.bootstrap.BeerLoader;
 
 public class BaseTest {
 	@Autowired
@@ -19,7 +20,7 @@ public class BaseTest {
 						.createdDate(OffsetDateTime.now())
 						.lastModifiedDate(OffsetDateTime.now())
 						.price(new BigDecimal("12.99"))
-						.upc(123200001L)
+						.upc(BeerLoader.BEER_1_UPC)
 						.build();
 	}
 }
