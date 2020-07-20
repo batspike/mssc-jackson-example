@@ -18,7 +18,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.samcancode.msscjackson.domain.Beer;
 import com.samcancode.msscjackson.web.model.BeerDto;
 import com.samcancode.msscjackson.web.model.BeerStyleEnum;
 
@@ -32,12 +31,21 @@ class BeerControllerTest {
 	ObjectMapper objectMapper;
 	
 	@Test
+	void testGetFirstBeer() throws Exception {
+		MvcResult r = mockMvc.perform(get("/api/v1/beer/first").accept(MediaType.APPLICATION_JSON)).andReturn();
+		BeerDto beerDto = objectMapper.readValue(r.getResponse().getContentAsString(), BeerDto.class);
+		
+		mockMvc.perform(get("/api/v1/beer/"+ beerDto.getId()).accept(MediaType.APPLICATION_JSON))
+			   .andExpect(status().isOk());
+	}
+	
+	@Test
 	void testGetBeerById() throws Exception {
 		MvcResult r = mockMvc.perform(get("/api/v1/beer/first").accept(MediaType.APPLICATION_JSON)).andReturn();
-		Beer beer = objectMapper.readValue(r.getResponse().getContentAsString(), Beer.class);
+		BeerDto beerDto = objectMapper.readValue(r.getResponse().getContentAsString(), BeerDto.class);
 		
-		mockMvc.perform(get("/api/v1/beer/"+ beer.getId()).accept(MediaType.APPLICATION_JSON))
-			   .andExpect(status().isOk());
+		mockMvc.perform(get("/api/v1/beer/"+ beerDto.getId()).accept(MediaType.APPLICATION_JSON))
+		.andExpect(status().isOk());
 	}
 	
 	@Test
@@ -58,25 +66,31 @@ class BeerControllerTest {
 
 	@Test
 	void testUpdateBeerById() throws Exception {
-		BeerDto beerDto = BeerDto.builder()
-				.upc(321200002L)
-				.price(new BigDecimal("13.99"))
-				.quantityOnHand(300)
-				.beerName("Best Beer")
-				.beerStyle(BeerStyleEnum.PALE_ALE)
-				.build();
+		MvcResult r = mockMvc.perform(get("/api/v1/beer/first").accept(MediaType.APPLICATION_JSON)).andReturn();
+		BeerDto beerDto = objectMapper.readValue(r.getResponse().getContentAsString(), BeerDto.class);
+		UUID beerId = beerDto.getId();
+		beerDto.setId(null);
+		beerDto.setVersion(null);
+		beerDto.setCreatedDate(null);
+		beerDto.setLastModifiedDate(null);
+		beerDto.setUpc(321200002L);
+		beerDto.setPrice(new BigDecimal("13.99"));
+		beerDto.setQuantityOnHand(300);
+		beerDto.setBeerName("Best Beer");
+		beerDto.setBeerStyle(BeerStyleEnum.PALE_ALE);
+
 		String beerDtoJson = objectMapper.writeValueAsString(beerDto);
 		
-		mockMvc.perform(put("/api/v1/beer/"+ UUID.randomUUID().toString()).contentType(MediaType.APPLICATION_JSON).content(beerDtoJson))
+		mockMvc.perform(put("/api/v1/beer/"+ beerId).contentType(MediaType.APPLICATION_JSON).content(beerDtoJson))
 			   .andExpect(status().isNoContent());
 	}
 
 	@Test
 	void testDeleteBeerById() throws Exception {
 		MvcResult r = mockMvc.perform(get("/api/v1/beer/first").accept(MediaType.APPLICATION_JSON)).andReturn();
-		Beer beer = objectMapper.readValue(r.getResponse().getContentAsString(), Beer.class);
+		BeerDto beerDto = objectMapper.readValue(r.getResponse().getContentAsString(), BeerDto.class);
 			
-		mockMvc.perform(delete("/api/v1/beer/"+ beer.getId()).accept(MediaType.APPLICATION_JSON))
+		mockMvc.perform(delete("/api/v1/beer/"+ beerDto.getId()).accept(MediaType.APPLICATION_JSON))
 		   .andExpect(status().isNoContent());
 	}
 
