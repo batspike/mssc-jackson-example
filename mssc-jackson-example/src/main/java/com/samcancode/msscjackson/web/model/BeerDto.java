@@ -9,7 +9,10 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Positive;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,6 +32,9 @@ public class BeerDto {
 	private Integer version;
 	
 	@Null
+	//@JsonFormat(pattern="yyyy-MM-dd", shape=JsonFormat.Shape.STRING) //reformat date and translate to string in Json output
+	@JsonSerialize(using=OffsetDateTimeSerializer.class) //alternative to the above
+	@JsonDeserialize(using=OffsetDateTimeDeserializer.class)
 	private OffsetDateTime createdDate;
 	
 	@Null
@@ -46,6 +52,7 @@ public class BeerDto {
 	
 	@Positive
 	@NotNull
+	@JsonFormat(shape=JsonFormat.Shape.STRING) //translated to string in JSON output
 	private BigDecimal price;
 	
 	private Integer quantityOnHand;
